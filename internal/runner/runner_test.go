@@ -12,12 +12,12 @@ import (
 )
 
 // Setup Suite
-type GithubForkUpdateSuite struct {
+type RunnerSuite struct {
 	suite.Suite
 }
 
-func Test_GithubForkUpdate_Suite(t *testing.T) {
-	suite.Run(t, &GithubForkUpdateSuite{})
+func Test_RunnerSuite(t *testing.T) {
+	suite.Run(t, &RunnerSuite{})
 }
 
 type TestGetParameters struct {
@@ -30,7 +30,7 @@ type TestGetParameters struct {
 	ExpectedVerbose bool
 }
 
-func Call_GetParameters(s *GithubForkUpdateSuite) {
+func Call_GetParameters(s *RunnerSuite) {
 	os.Args = []string{"mainTest"}
 	arg := fmt.Sprintf("-auth=%s", os.Getenv("GITHUB_AUTH"))
 	os.Args = append(os.Args, arg)
@@ -119,7 +119,7 @@ func (s *GithubForkUpdateSuite) Test_GetParameters() {
 	}
 }
 
-func (s *GithubForkUpdateSuite) Test_GetParameters_AuthFlag_Empty() {
+func (s *RunnerSuite) Test_GetParameters_AuthFlag_Empty() {
 	os.Args = []string{"mainTest"}
 
 	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
@@ -143,7 +143,7 @@ func (s *GithubForkUpdateSuite) Test_GetParameters_AuthFlag_Empty() {
 	assert.Fail(s.T(), "Test_GetParameters_AuthFlag_Empty expected Panic to fire")
 }
 
-func (s *GithubForkUpdateSuite) Test_GetParameters_FlagParse() {
+func (s *RunnerSuite) Test_GetParameters_FlagParse() {
 	os.Args = []string{"mainTest"}
 
 	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
