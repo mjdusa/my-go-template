@@ -1,0 +1,35 @@
+name: Report - Report GitHub state
+
+on:
+  workflow_dispatch:
+
+  workflow_call:
+
+  push:
+
+  pull_request:
+
+env:
+  target_ref: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  report:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: report-step
+        id: report-id
+        run: |
+          echo "reporting:"
+          echo "Job was triggered by a ${{ github.event_name }} event."
+          echo "Job is now running on a ${{ runner.os }} server hosted by GitHub!"
+          echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+          echo "job.status := ${{ job.status }}."
+          echo "env.target_ref := ${{ env.target_ref }}"
+          echo "Files in ${{ github.workspace }}:"
+          ls -als ${{ github.workspace }}
+          echo "EOR"

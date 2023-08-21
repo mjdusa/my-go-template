@@ -1,4 +1,4 @@
-name: Build
+name: Build - Build Application Release
 
 on:
   workflow_dispatch:
@@ -61,4 +61,4 @@ jobs:
           echo "building"
           go env
           mkdir dist
-          go build -x -v -ldflags="-s -w -X 'internal/version.AppVersion=${{ steps.prebuild.outputs.appversion }}' -X 'internal/version.Branch=${{ env.target_ref }}' -X 'internal/version.BuildTime=${{ steps.prebuild.outputs.buildtime }}' -X 'internal/version.Commit=${{ github.sha }}' -X 'internal/version.GoVersion=${{ steps.prebuild.outputs.goversion }}'" -o dist/example cmd/example/main.go
+          go build -x -v -ldflags="-s -w -X 'internal/version.AppVersion=${{ steps.prebuild.outputs.appversion }}' -X 'internal/version.Branch=${{ env.target_ref }}' -X 'internal/version.BuildTime=${{ steps.prebuild.outputs.buildtime }}' -X 'internal/version.Commit=${{ github.sha }}' -X 'internal/version.GoVersion=${{ steps.prebuild.outputs.goversion }}'" -o dist/my-go-template-app cmd/my-go-template-app/main.go

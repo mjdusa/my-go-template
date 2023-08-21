@@ -1,4 +1,4 @@
-name: Linter
+name: Linter - Run full battery of linters 
 
 on:
   workflow_dispatch:
