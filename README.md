@@ -5,17 +5,23 @@
 [![Code Coverage][go_code_coverage_img]][repo_url]
 [![License][repo_license_img]][repo_license_url]
 
+
 ## Description
-Please see our [Contributing](./CONTRIBUTING.md) for how to contribute to the project.
+
+* TODO: Description of project goes here.
+
+
+## Customizing Template after coping
+
+* TODO: Replace 'my-go-template-org' with your github org
+* TODO: Replace 'my-go-template-app' with your app name
+* TODO: Rename the cmd/my-go-template-app directory to your app name
+
 
 ## Contributing
 
-# Replace 'my-go-template-org' with your github org
-# Replace 'my-go-template-app' with your app name
-# Rename the cmd/my-go-template-app directory to your app name
-
-## Contributing
 Please see our [Contributing](./CONTRIBUTING.md) for how to contribute to the project.
+
 
 ## Setting up for development...
 
@@ -51,29 +57,34 @@ pre-commit install --install-hooks
 pre-commit run --all-files
 ```
 
-
-## Running...
-
-dist/example
-
-
-## Maintaining, Housekeeping, Greenkeeping, etc.
-
-### Upgrade Go Version
-
-```bash
-go mod edit -go=<go_version> && go mod tidy
-```
-### Upgrade Dependency Versions
-
-```bash
-go get -u && go mod tidy
-```
 ## Running...
 ```
 make release
 ...
 ./dist/my-go-template-app
+```
+
+
+## Maintaining, Housekeeping, Greenkeeping, etc.
+
+### Upgrade Go Version
+```bash
+go mod edit -go=<go_version> && go mod tidy
+```
+
+### Upgrade Dependency Versions
+```bash
+go get -u && go mod tidy
+```
+
+## Running GitHub Super-Linter Locally
+```bash
+docker run --rm -e RUN_LOCAL=true --env-file ".github/super-linter.env" -v $PWD:/tmp/lint github/super-linter:latest
+```
+
+## Running golangci-lint Locally
+```bash
+golangci-lint run --config .github/linters/.golangci.yml --issues-exit-code 0 --out-format=checkstyle
 ```
 
 

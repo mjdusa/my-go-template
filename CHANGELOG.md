@@ -8,11 +8,9 @@ All notable changes to this project will be documented in this file.
 * Changed - for changes in existing functionality.
 * Deprecated - for soon-to-be removed features.
 * Removed - for now removed features.
-* Fixed - for any bug fixes.
+* Fixed - for any bugfixes.
 * Security - in case of vulnerabilities.
 
-## [Unreleased]
+## Releases
 
-## [1.0.0] - April 5, 2023
-
-* Base release
+* 1.0.0 - January 01, 2023 - Initial release.

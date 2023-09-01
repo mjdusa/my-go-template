@@ -15,8 +15,8 @@
 *.test
 
 # IDE specific metadata
-#.vscode/
 .idea/
+#.vscode/
 
 # Apple fodder
 .DS_Store

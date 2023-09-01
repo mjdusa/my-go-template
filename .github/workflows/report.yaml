@@ -1,4 +1,5 @@
-name: Report - Report GitHub state
+---
+name: report
 
 on:
   workflow_dispatch:
