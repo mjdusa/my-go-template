@@ -17,6 +17,7 @@ env:
 
 jobs:
   super-linter:
+    name: Super-Linter
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -25,17 +26,15 @@ jobs:
 
     steps:
       - name: actions/checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744  # v3.6.0
         with:
           repository: ${{ github.repository }}
           ref: ${{ env.target_ref }}
           token: ${{ github.token }}
-          # Full git history is needed to get a proper list of changed files
-          # within `super-linter`.
           fetch-depth: 0
 
       - name: super-linter/super-linter
-        uses: super-linter/super-linter@v5
+        uses: super-linter/super-linter@latest
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ github.token }}

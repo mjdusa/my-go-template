@@ -15,6 +15,7 @@ env:
 
 jobs:
   report:
+    name: Report
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -26,11 +27,12 @@ jobs:
         id: report-id
         run: |
           echo "reporting:"
-          echo "Job was triggered by a ${{ github.event_name }} event."
-          echo "Job is now running on a ${{ runner.os }} server hosted by GitHub!"
-          echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-          echo "job.status := ${{ job.status }}."
-          echo "env.target_ref := ${{ env.target_ref }}"
-          echo "Files in ${{ github.workspace }}:"
+          echo "github.event_name: ${{ github.event_name }}"
+          echo "runner.os: ${{ runner.os }}"
+          echo "github.ref: ${{ github.ref }}"
+          echo "github.repository: ${{ github.repository }}"
+          echo "job.status: ${{ job.status }}"
+          echo "env.target_ref: ${{ env.target_ref }}"
+          echo "github.workspace: ${{ github.workspace }}"
           ls -als ${{ github.workspace }}
           echo "EOR"
