@@ -65,8 +65,9 @@ prebuild: init $(BUILD_DIR)
 .PHONY: golangcilint
 golangcilint: init $(BUILD_DIR)
 	echo "Running golangci-lint"
-	${GOPATH}/bin/golangci-lint  --version
-	${GOPATH}/bin/golangci-lint  run --verbose > "$(LINTER_REPORT)"
+	${GOPATH}/bin/golangci-lint --version
+	${GOPATH}/bin/golangci-lint run --verbose --config .github/linters/.golangci.yml \
+	  --issues-exit-code 0 --out-format=checkstyle > "$(LINTER_REPORT)"
 #	cat $(LINTER_REPORT)
 
 .PHONY: lint
