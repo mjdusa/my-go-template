@@ -1,4 +1,4 @@
-GIT_REPO:=github.com/mdonahue-godaddy/pstore-client
+GIT_REPO:=github.com/mdonahue-godaddy/my-go-template
 BRANCH:=$(shell git rev-parse --abbrev-ref HEAD)
 COMMIT:=$(shell git log --pretty=format:'%H' -n 1)
 BUILD_TS:=$(shell date -u "+%Y-%m-%dT%TZ")
