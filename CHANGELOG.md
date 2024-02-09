@@ -13,4 +13,4 @@ All notable changes to this project will be documented in this file.
 
 ## Releases
 
-* 1.0.0 - January 01, 2023 - Initial release.
+* 1.0.0 - January 01, 2024 - Initial release.

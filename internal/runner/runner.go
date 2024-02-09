@@ -9,21 +9,6 @@ import (
 	"github.com/mjdusa/my-go-template/internal/version"
 )
 
-const (
-	OsExistCode int = 1
-)
-
-var PanicOnExit = false // Set to true to tell Exit() to Panic rather than call
-// os.Exit() - this should ONLY be used for testing
-
-func Exit(code int) {
-	if PanicOnExit && code != 0 {
-		panic(fmt.Sprintf("PanicOnExit is true, code=%d", code))
-	}
-
-	os.Exit(code)
-}
-
 func GetParameters() (bool, bool) {
 	flagSet := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
 
@@ -39,7 +24,7 @@ func GetParameters() (bool, bool) {
 	// Parse the flags
 	if err := flagSet.Parse(os.Args[1:]); err != nil {
 		flagSet.Usage()
-		Exit(OsExistCode)
+		panic(err)
 	}
 
 	if verbose {
@@ -58,7 +43,10 @@ func GetParameters() (bool, bool) {
 
 func Run() int {
 	// ctx := context.Background()
-	// debugFlag, verboseFlag := GetParameters()
+	debugFlag, verboseFlag := GetParameters()
+
+	fmt.Println("Debug Flag: ", debugFlag)
+	fmt.Println("Verbose Flag: ", verboseFlag)
 
 	// go something usefull here
 

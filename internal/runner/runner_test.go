@@ -66,16 +66,6 @@ func get_testGetParameters_data() []testGetParameters {
 }
 
 func (s *RunnerSuite) Test_GetParameters() {
-	put.PanicOnExit = true
-
-	defer func() {
-		if r := recover(); r == nil {
-			s.T().Logf("The code did not panic")
-		} else {
-			s.T().Errorf("Recovered in %v", r)
-		}
-	}()
-
 	for _, test := range get_testGetParameters_data() {
 		os.Args = []string{putRunner}
 		if test.DebugFlag {
