@@ -29,12 +29,11 @@ No matter how you want to get involved, we ask that you first learn what’s exp
 who participates in the project by reading the Contribution Guidelines and our
 [Code of Conduct][coc].
 
-**Please Note:** GitHub is for bug reports and contributions primarily.  You can request an invite
-[here][invite].
+**Please Note:** GitHub is for bug reports and contributions primarily.  You can request an invite ...
 
 ## Answering Questions
 
-One of the most important and immediate ways you can support this project is to answer questions in [Github][issues]. Whether you’re helping a newcomer understand a feature or troubleshooting an edge case with a
+One of the most important and immediate ways you can support this project is to answer questions in [GitHub][issues]. Whether you’re helping a newcomer understand a feature or troubleshooting an edge case with a
 seasoned developer, your knowledge and experience with a programming language can go a long way to help others.
 
 ## Reporting Bugs
@@ -43,7 +42,7 @@ seasoned developer, your knowledge and experience with a programming language ca
 
 Before submitting a ticket, please search our [Issue Tracker][issues] to make sure it does not already exist and have a
 simple replication of the behavior. If the issue is isolated to one of the dependencies of this project, please create a
-Github [issue][issues] in the project.
+GitHub [issue][issues] in the project.
 
 Submit a ticket for your issue, assuming one does not already exist:
 
@@ -74,7 +73,7 @@ code is easier than reasoning about a longer sample.
 
 From a practical perspective, contributions are as simple as:
 
-1. Fork and clone the repo, [see Github's instructions if you need help.][fork]
+1. Fork and clone the repo, [see GitHub's instructions if you need help.][fork]
 1. Create a branch for your PR with `git checkout -b pr/your-branch-name`
 1. Make changes on the branch of your forked repository.
 1. When committing, reference your issue (if present) and include a note about the fix.
@@ -84,12 +83,12 @@ From a practical perspective, contributions are as simple as:
 
 If you are interested in making a large change and feel unsure about its overall effect, start with opening an Issue in
 the project's [Issue Tracker][issues]
-with a high-level proposal and discuss it with the core contributors through Github comments. After reaching a consensus with core contributors about the change, discuss the best way to go about implementing it.
+with a high-level proposal and discuss it with the core contributors through GitHub comments. After reaching a consensus with core contributors about the change, discuss the best way to go about implementing it.
 
 > Tip: Keep your master branch pointing at the original repository and make
 > pull requests from branches on your fork. To do this, run:
 >   ```bash
-> git remote add upstream https://github.secureserver.net/appservices/golden-amis.git
+> git remote add upstream https://github.com/gdcorp...../golden-amis.git
 > git fetch upstream
 > git branch --set-upstream-to=upstream/master master
 >   ```
@@ -138,7 +137,7 @@ Please make use of the `.editorconfig` file in this repository
 * [git-flow cheatsheet](https://danielkummer.github.io/git-flow-cheatsheet/)
 
 [issues]: <GITHUB OR JIRA BOARD LINK>
-[coc]: ./CODE_OF_CONDUCT.md
-[fork]: https://help.github.com/en/articles/fork-a-repo
-[git flow methodology]: http://nvie.com/posts/a-successful-git-branching-model/
-[Pull Request Template]: .github/pull_request_template.md
+[coc](./CODE_OF_CONDUCT.md)
+[fork](https://help.github.com/en/articles/fork-a-repo)
+[git flow methodology](http://nvie.com/posts/a-successful-git-branching-model/)
+[Pull Request Template](.github/pull_request_template.md)

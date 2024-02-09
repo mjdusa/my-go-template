@@ -7,7 +7,7 @@
 
 ## Customizing Template after coping
 
-* TODO: Replace 'mjdusa' with your github org
+* TODO: Replace 'mjdusa' with your GitHub org or user
 * TODO: Replace 'my-go-template' with your app name
 * TODO: Rename the cmd/my-go-template directory to your app name
 
@@ -19,8 +19,10 @@ Please see our [Contributing](./CONTRIBUTING.md) for how to contribute to the pr
 
 ## Setting up for development
 
-1. Clone Repo
+1. Clone repository
+```bash
 git clone <LINK>
+```
 
 2. Setup Pre-commit Hooks
 When you clone this repository to your workstation, make sure to install the [pre-commit](https://pre-commit.com/) hooks. [GitHub Repository](https://github.com/pre-commit/pre-commit)
@@ -52,7 +54,7 @@ pre-commit run --all-files
 ```
 
 ## Running...
-```
+```bash
 make release
 ...
 ./dist/my-go-template
