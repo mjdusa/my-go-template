@@ -56,7 +56,6 @@ pre-commit run --all-files
 ## Running...
 ```bash
 make release
-...
 ./dist/my-go-template
 ```
 

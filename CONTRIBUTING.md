@@ -136,7 +136,7 @@ Please make use of the `.editorconfig` file in this repository
 * [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
 * [git-flow cheatsheet](https://danielkummer.github.io/git-flow-cheatsheet/)
 
-[issues]: <GITHUB OR JIRA BOARD LINK>
+[issues](<GITHUB OR JIRA BOARD LINK>)
 [coc](./CODE_OF_CONDUCT.md)
 [fork](https://help.github.com/en/articles/fork-a-repo)
 [git flow methodology](http://nvie.com/posts/a-successful-git-branching-model/)
