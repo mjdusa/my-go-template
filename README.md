@@ -53,9 +53,10 @@ pre-commit install --install-hooks
 pre-commit run --all-files
 ```
 
-## Running...
+## Running
 ```bash
 make release
+...
 ./dist/my-go-template
 ```
 

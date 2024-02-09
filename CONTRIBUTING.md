@@ -73,7 +73,7 @@ code is easier than reasoning about a longer sample.
 
 From a practical perspective, contributions are as simple as:
 
-1. Fork and clone the repo, [see GitHub's instructions if you need help.][fork]
+1. Fork and clone the repository, [see GitHub's instructions if you need help.][fork]
 1. Create a branch for your PR with `git checkout -b pr/your-branch-name`
 1. Make changes on the branch of your forked repository.
 1. When committing, reference your issue (if present) and include a note about the fix.

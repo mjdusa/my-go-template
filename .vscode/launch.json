@@ -13,7 +13,7 @@
             "cwd": "${workspaceFolder}",
             "env": {},
             "args": ["-auth=${env:GITHUB_AUTH}"],
-            "showLog": true,
+            "showLog": true
         },
         {
             "name": "Debug my-go-template in verbose",
@@ -24,7 +24,7 @@
             "cwd": "${workspaceFolder}",
             "env": {},
             "args": ["-auth=${env:GITHUB_AUTH}", "-debug", "-verbose"],
-            "showLog": true,
+            "showLog": true
         },
         {
             "name": "Run my-go-template in verbose",
@@ -35,7 +35,7 @@
             "cwd": "${workspaceFolder}",
             "env": {},
             "args": ["-auth=${env:GITHUB_AUTH}", "-verbose"],
-            "showLog": true,
+            "showLog": true
         }
     ]
 }
