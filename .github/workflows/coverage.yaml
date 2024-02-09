@@ -24,7 +24,7 @@ jobs:
     name: Coverage
     strategy:
       matrix:
-        go-version: ['oldstable', 'stable']
+        go-version: ['stable']  # only use ONE version of go here or the upload-artifact will fail
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
