@@ -13,7 +13,8 @@ const (
 	OsExistCode int = 1
 )
 
-var PanicOnExit bool = false // Set to true to tell Exit() to Panic rather than call os.Exit() - should ONLY be used for testing
+var PanicOnExit bool = false // Set to true to tell Exit() to Panic rather than call
+// os.Exit() - this should ONLY be used for testing
 
 func Exit(code int) {
 	if PanicOnExit && code != 0 {
