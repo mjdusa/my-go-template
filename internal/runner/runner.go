@@ -1,14 +1,12 @@
 package runner
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"os"
 	"runtime/debug"
 
-	"github.com/google/go-github/v53/github"
-	"github.com/my-go-template-org/my-go-template-app/internal/version"
+	"github.com/mjdusa/my-go-template/internal/version"
 )
 
 const (
@@ -18,34 +16,27 @@ const (
 var PanicOnExit bool = false // Set to true to tell Exit() to Panic rather than call os.Exit() - should ONLY be used for testing
 
 func Exit(code int) {
-	if PanicOnExit {
+	if PanicOnExit && code != 0 {
 		panic(fmt.Sprintf("PanicOnExit is true, code=%d", code))
 	}
 
 	os.Exit(code)
 }
 
-func GetParameters() (string, bool, bool) {
+func GetParameters() (bool, bool) {
 	flagSet := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
 
 	flagSet.SetOutput(os.Stderr)
 
-	var auth string
 	var dbg bool
 	var verbose bool
 
 	// add flags
-	flagSet.StringVar(&auth, "auth", "", "GitHub Auth Token")
 	flagSet.BoolVar(&dbg, "debug", false, "Log Debug")
 	flagSet.BoolVar(&verbose, "verbose", false, "Show Verbose Logging")
 
 	// Parse the flags
 	if err := flagSet.Parse(os.Args[1:]); err != nil {
-		flagSet.Usage()
-		Exit(OsExistCode)
-	}
-
-	if len(auth) == 0 {
 		flagSet.Usage()
 		Exit(OsExistCode)
 	}
@@ -61,19 +52,14 @@ func GetParameters() (string, bool, bool) {
 		}
 	}
 
-	return auth, dbg, verbose
+	return dbg, verbose
 }
 
 func Run() int {
-	ctx := context.Background()
-	auth, debugFlag, verboseFlag := GetParameters()
+	// ctx := context.Background()
+	// debugFlag, verboseFlag := GetParameters()
 
-	client := github.NewTokenClient(ctx, auth)
-
-	err := githubapi.SyncForks(ctx, client, "", verboseFlag, debugFlag)
-	if err != nil {
-		panic(err)
-	}
+	// go something usefull here
 
 	return 0
 }

@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/my-go-template-org/my-go-template-app/internal/version"
+	"github.com/mjdusa/my-go-template/internal/version"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )

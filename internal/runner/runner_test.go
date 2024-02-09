@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	main "github.com/my-go-template-org/my-go-template-app/cmd/my-go-template-app"
+	main "github.com/mjdusa/my-go-template/cmd/my-go-template"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )

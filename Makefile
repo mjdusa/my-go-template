@@ -1,9 +1,9 @@
-GIT_REPO:=github.com/my-go-template-org/my-go-template-app
+GIT_REPO:=github.com/mjdusa/my-go-template
 BRANCH:=$(shell git rev-parse --abbrev-ref HEAD)
 COMMIT:=$(shell git log --pretty=format:'%H' -n 1)
 BUILD_TS:=$(shell date -u "+%Y-%m-%dT%TZ")
 BUILD_DIR:=dist
-APP_NAME:=my-go-template-app
+APP_NAME:=my-go-template
 #APP_VERSION:=$(shell git describe --tags)
 APP_VERSION:=$(shell cat .version)
 GO_VERSION:=$(shell go version | sed -r 's/go version go(.*)\ .*/\1/')
@@ -68,7 +68,7 @@ golangcilint: init $(BUILD_DIR)
 	${GOPATH}/bin/golangci-lint --version
 	${GOPATH}/bin/golangci-lint run --verbose --config .github/linters/.golangci.yml \
 	  --issues-exit-code 0 --out-format=checkstyle > "$(LINTER_REPORT)"
-#	cat $(LINTER_REPORT)
+	cat $(LINTER_REPORT)
 
 .PHONY: lint
 lint: init golangcilint

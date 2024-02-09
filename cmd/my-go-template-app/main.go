@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/my-go-template-org/my-go-template-app/internal/runner"
+	"github.com/mjdusa/my-go-template/internal/runner"
 )
 
 func main() {
