@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mjdusa/my-go-template/internal/version"
+	put "github.com/mjdusa/my-go-template/internal/version" // put - package under test
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -58,13 +58,13 @@ func (s *VersionSuite) Test_GetVersion() {
 			"%s version: [%s]\n- Branch:     [%s]\n- Build Time: [%s]\n- Commit:     [%s]\n- Go Version: [%s]\n",
 			os.Args[0], tst.AppVersion, tst.Branch, tst.BuildTime, tst.Commit, tst.GoVersion)
 
-		version.AppVersion = tst.AppVersion
-		version.Branch = tst.Branch
-		version.BuildTime = tst.BuildTime
-		version.Commit = tst.Commit
-		version.GoVersion = tst.GoVersion
+		put.AppVersion = tst.AppVersion
+		put.Branch = tst.Branch
+		put.BuildTime = tst.BuildTime
+		put.Commit = tst.Commit
+		put.GoVersion = tst.GoVersion
 
-		actual := version.GetVersion()
+		actual := put.GetVersion()
 
 		assert.Equal(s.T(), expected, actual, tst.Description+fmt.Sprintf(" expected '%s', actual '%s'", expected, actual))
 	}
