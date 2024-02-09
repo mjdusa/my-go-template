@@ -1,14 +1,16 @@
 package runner_test
 
 import (
-	"flag"
-	"fmt"
 	"os"
 	"testing"
 
-	main "github.com/mjdusa/my-go-template/cmd/my-go-template"
+	put "github.com/mjdusa/my-go-template/internal/runner" // put - package under test
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
+)
+
+const (
+	putRunner = "put_runner" // put - package under test
 )
 
 // Setup Suite
@@ -20,78 +22,72 @@ func Test_RunnerSuite(t *testing.T) {
 	suite.Run(t, &RunnerSuite{})
 }
 
-type TestGetParameters struct {
+type testGetParameters struct {
 	Description     string
-	AuthFlag        *string
 	DebugFlag       bool
 	VerboseFlag     bool
-	ExpectedAuth    string
 	ExpectedDebug   bool
 	ExpectedVerbose bool
 }
 
-func Call_GetParameters(s *RunnerSuite) {
-	os.Args = []string{"mainTest"}
-	arg := fmt.Sprintf("-auth=%s", os.Getenv("GITHUB_AUTH"))
-	os.Args = append(os.Args, arg)
-	os.Args = append(os.Args, "-debug")
-	os.Args = append(os.Args, "-verbose")
+func get_testGetParameters_data() []testGetParameters {
+	tests := []testGetParameters{
+		{
+			Description:     "All false",
+			DebugFlag:       false,
+			VerboseFlag:     false,
+			ExpectedDebug:   false,
+			ExpectedVerbose: false,
+		},
+		{
+			Description:     "All true",
+			DebugFlag:       true,
+			VerboseFlag:     true,
+			ExpectedDebug:   true,
+			ExpectedVerbose: true,
+		},
+		{
+			Description:     "Flip Flop",
+			DebugFlag:       true,
+			VerboseFlag:     false,
+			ExpectedDebug:   true,
+			ExpectedVerbose: false,
+		},
+		{
+			Description:     "Flop Flip",
+			DebugFlag:       false,
+			VerboseFlag:     true,
+			ExpectedDebug:   false,
+			ExpectedVerbose: true,
+		},
+	}
 
-	actualAuth, actualDebug, actualVerbose := main.GetParameters()
-	main.GetParameters()
-
-	fmt.Println("inside")
-
-	fmt.Fprintf(os.Stdout, "actualAuth=[%s]\n", actualAuth)
-	fmt.Fprintf(os.Stdout, "actualDebug=[%t]\n", actualDebug)
-	fmt.Fprintf(os.Stdout, "actualVerbose=[%t]\n", actualVerbose)
+	return tests
 }
 
-func (s *RunnerSuite) Test_GetParameters_AuthFlag_Empty() {
-	os.Args = []string{"mainTest"}
-
-	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
-
-	os.Args = append(os.Args, "-auth=")
-	os.Args = append(os.Args, "-debug")
-	os.Args = append(os.Args, "-verbose")
-
-	main.PanicOnExit = true
+func (s *RunnerSuite) Test_GetParameters() {
+	put.PanicOnExit = true
 
 	defer func() {
 		if r := recover(); r == nil {
-			s.T().Errorf("The code did not panic")
+			s.T().Logf("The code did not panic")
 		} else {
-			s.T().Logf("Recovered in %v", r)
+			s.T().Errorf("Recovered in %v", r)
 		}
 	}()
 
-	main.GetParameters()
-
-	assert.Fail(s.T(), "Test_GetParameters_AuthFlag_Empty expected Panic to fire")
-}
-
-func (s *RunnerSuite) Test_GetParameters_FlagParse() {
-	os.Args = []string{"mainTest"}
-
-	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
-
-	os.Args = append(os.Args, "-auth=''")
-	os.Args = append(os.Args, "-debug")
-	os.Args = append(os.Args, "-verbose")
-	os.Args = append(os.Args, "-panic")
-
-	main.PanicOnExit = true
-
-	defer func() {
-		if r := recover(); r == nil {
-			s.T().Errorf("The code did not panic")
-		} else {
-			s.T().Logf("Recovered in %v", r)
+	for _, test := range get_testGetParameters_data() {
+		os.Args = []string{putRunner}
+		if test.DebugFlag {
+			os.Args = append(os.Args, "-debug")
 		}
-	}()
+		if test.VerboseFlag {
+			os.Args = append(os.Args, "-verbose")
+		}
 
-	main.GetParameters()
+		actualDebug, actualVerbose := put.GetParameters()
 
-	assert.Fail(s.T(), "Test_GetParameters_FlagParse expected Panic to fire")
+		assert.Equal(s.T(), test.ExpectedDebug, actualDebug, test.Description)
+		assert.Equal(s.T(), test.ExpectedVerbose, actualVerbose, test.Description)
+	}
 }
