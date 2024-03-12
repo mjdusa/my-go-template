@@ -10,12 +10,12 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-// Setup Suite
+// Setup Suite.
 type VersionSuite struct {
 	suite.Suite
 }
 
-func Test_VersionSuite(t *testing.T) {
+func TestVersionSuite(t *testing.T) {
 	suite.Run(t, &VersionSuite{})
 }
 
@@ -29,7 +29,7 @@ type testGetVersion struct {
 	Expected    string
 }
 
-func get_testGetVersion_data() []testGetVersion {
+func createGetVersionTestData() []testGetVersion {
 	tests := []testGetVersion{
 		{
 			Description: "All are empty strings",
@@ -53,7 +53,7 @@ func get_testGetVersion_data() []testGetVersion {
 }
 
 func (s *VersionSuite) Test_GetVersion() {
-	for _, tst := range get_testGetVersion_data() {
+	for _, tst := range createGetVersionTestData() {
 		expected := fmt.Sprintf(
 			"%s version: [%s]\n- Branch:     [%s]\n- Build Time: [%s]\n- Commit:     [%s]\n- Go Version: [%s]\n",
 			os.Args[0], tst.AppVersion, tst.Branch, tst.BuildTime, tst.Commit, tst.GoVersion)

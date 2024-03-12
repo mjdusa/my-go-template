@@ -13,12 +13,12 @@ const (
 	putRunner = "put_runner" // put - package under test
 )
 
-// Setup Suite
+// Setup Suite.
 type RunnerSuite struct {
 	suite.Suite
 }
 
-func Test_RunnerSuite(t *testing.T) {
+func TestRunnerSuite(t *testing.T) {
 	suite.Run(t, &RunnerSuite{})
 }
 
@@ -30,7 +30,7 @@ type testGetParameters struct {
 	ExpectedVerbose bool
 }
 
-func get_testGetParameters_data() []testGetParameters {
+func createGetParametersTestData() []testGetParameters {
 	tests := []testGetParameters{
 		{
 			Description:     "All false",
@@ -66,7 +66,7 @@ func get_testGetParameters_data() []testGetParameters {
 }
 
 func (s *RunnerSuite) Test_GetParameters() {
-	for _, test := range get_testGetParameters_data() {
+	for _, test := range createGetParametersTestData() {
 		os.Args = []string{putRunner}
 		if test.DebugFlag {
 			os.Args = append(os.Args, "-debug")
