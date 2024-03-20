@@ -124,3 +124,30 @@ jobs:
           name: test-reports
           path: ./coverage.*
           retention-days: 180
+
+      - name: pre-build
+        id: prebuild
+        run: |
+          echo "pre-building"
+          goversion=$(go version)
+          echo "goversion=${goversion}"
+          echo "::set-output name=goversion::${goversion}"
+          appversion=$(git describe --tags)
+          echo "appversion=${appversion}"
+          echo "::set-output name=appversion::${appversion}"
+          buildtime=$(date -u "+%Y-%m-%dT%TZ")
+          echo "buildtime=${buildtime}"
+          echo "::set-output name=buildtime::${buildtime}"
+
+      - name: go build
+        run: |
+          go env
+          mkdir dist
+          APP=my-go-template
+          go build -x -v -ldflags="-s -w \
+            -X 'internal/version.AppVersion=${{ steps.prebuild.outputs.appversion }}' \
+            -X 'internal/version.Branch=${{ env.target_ref }}' \
+            -X 'internal/version.BuildTime=${{ steps.prebuild.outputs.buildtime }}' \
+            -X 'internal/version.Commit=${{ github.sha }}' \
+            -X 'internal/version.GoVersion=${{ steps.prebuild.outputs.goversion }}'" \
+            -o dist/${APP} cmd/${APP}/main.go
