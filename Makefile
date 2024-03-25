@@ -4,8 +4,8 @@ COMMIT:=$(shell git log --pretty=format:'%H' -n 1)
 BUILD_TS:=$(shell date -u "+%Y-%m-%dT%TZ")
 BUILD_DIR:=dist
 APP_NAME:=my-go-template
-#APP_VERSION:=$(shell git describe --tags)
-APP_VERSION:=$(shell cat .version)
+#APP_VERSION:=$(shell cat .version)
+APP_VERSION:=$(shell git describe --tags)
 GO_VERSION:=$(shell go version | sed -r 's/go version go(.*)\ .*/\1/')
 GOBIN:=${GOPATH}/bin
 
@@ -13,10 +13,14 @@ GOFLAGS = -a
 LDFLAGS = -s -w -X '$(GIT_REPO)/internal/version.AppVersion=$(APP_VERSION)' -X '$(GIT_REPO)/internal/version.Branch=$(BRANCH)' -X '$(GIT_REPO)/internal/version.BuildTime=$(BUILD_TS)' -X '$(GIT_REPO)/internal/version.Commit=$(COMMIT)' -X '$(GIT_REPO)/internal/version.GoVersion=$(GO_VERSION)'
 #GOCMD = GOPRIVATE='' ; CGO_ENABLED='0' ; GO111MODULE='on' ; go
 GOCMD = GOPRIVATE='' ; GO111MODULE='on' ; go
+GOCLEAN = go clean
 GOENV = go env
 
 LINTER_REPORT = $(BUILD_DIR)/golangci-lint-$(BUILD_TS).out
 COVERAGE_REPORT = $(BUILD_DIR)/unit-test-coverage-$(BUILD_TS)
+
+.PHONY: default
+default: help
 
 .PHONY: clean
 clean:
@@ -30,35 +34,14 @@ $(BUILD_DIR):
 
 .PHONY: installdep
 installdep:
-ifeq (,$(wildcard $(GOBIN)/golangci-lint))
-	@echo "Installing golangci-lint..."
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-else
-	@echo "$(GOBIN)/golangci-lint detected, skipping install."
-endif
-ifeq (,$(wildcard $(GOBIN)/gcov2lcov))
-	@echo "Installing gcov2lcov..."
-	go install github.com/jandelgado/gcov2lcov@latest
-else
-	@echo "$(GOBIN)/gcov2lcov detected, skipping install."
-endif
-#ifeq (,$(wildcard $(which pre-commit)))
-#	@echo "Brew installing pr-commit"
-#	@brew install pre-commit || true
-#else
-#	@echo "pre-commit detected, skipping install."
-#endif
+	./install-deps.sh
 
 .PHONY: init
-init: installdep
-ifeq (,$(wildcard ./.git/hooks/pre-commit))
-	@echo "Adding pre-commit hook to .git/hooks/pre-commit"
-	ln -s $(shell pwd)/hooks/pre-commit $(shell pwd)/.git/hooks/pre-commit || true
-endif
+init:
 
 .PHONY: prebuild
 prebuild: init $(BUILD_DIR)
-	@echo "Running go mod tidy & vendor"
+	@echo "Running $(GOCMD) mod tidy and $(GOCMD) mod vendor"
 	go version
 	$(GOENV)
 	$(GOCMD) mod tidy && $(GOCMD) mod vendor
@@ -78,9 +61,9 @@ lint: init golangcilint
 unittest: init $(BUILD_DIR)
 	$(GOENV)
 	$(GOCMD) test -race -coverprofile="$(COVERAGE_REPORT).gcov" -covermode=atomic ./...
-#	cat "$(COVERAGE_REPORT).gcov"
+	cat "$(COVERAGE_REPORT).gcov"
 	gcov2lcov -infile "$(COVERAGE_REPORT).gcov" -outfile "$(COVERAGE_REPORT).lcov"
-#	cat "$(COVERAGE_REPORT).lcov"
+	cat "$(COVERAGE_REPORT).lcov"
 	$(GOCMD) tool cover -func="$(COVERAGE_REPORT).gcov"
 #	$(GOCMD) tool cover -html="$(COVERAGE_REPORT).gcov"
 

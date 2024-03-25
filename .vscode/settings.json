@@ -1,13 +1,12 @@
 {
-    "cSpell.words": [
-    ],
-    "go.lintTool": "golangci-lint",
-    "go.lintFlags": [
-        "--fast",
-        "--verbose",
-        "--tests=true",
-        "--config=.github/linters/.golangci.yml",
-        "--issues-exit-code=0",
-        "--out-format=checkstyle"
-    ]
+  "cSpell.words": [],
+  "go.lintFlags": [
+    "--fast",
+    "--verbose",
+    "--tests=true",
+    "--config=.github/linters/.golangci.yml",
+    "--issues-exit-code=0",
+    "--out-format=checkstyle"
+  ],
+  "go.lintTool": "golangci-lint"
 }

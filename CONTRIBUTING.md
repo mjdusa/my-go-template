@@ -7,4 +7,3 @@ This guide is intended for _contributors_.
 > the narrowest definition of a contributor).
 
 [https://opensource.guide/leadership-and-governance/]
-
