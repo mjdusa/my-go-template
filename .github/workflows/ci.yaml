@@ -14,6 +14,9 @@ on:
     branches:
       - main
 
+# Don't grant any access by default
+permissions: {}
+
 env:
   target_ref: ${{ github.head_ref || github.ref_name }}
   GO111MODULE: on
@@ -29,6 +32,14 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    ############################################
+    # Grant status permission for MULTI_STATUS #
+    ############################################
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+
     steps:
       - name: actions/checkout
         uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633  # v4.1.2
@@ -39,6 +50,15 @@ jobs:
           persist-credentials: false  # otherwise, the token used is the GITHUB_TOKEN, instead of your
           #                             personal access token.
           fetch-depth: 0
+
+      - name: Load super-linter configuration
+        run: |
+          cat .github/super-linter.env >> ${GITHUB_ENV}
+
+      - name: super-linter/super-linter
+        uses: super-linter/super-linter@92e2606383320f72e6129f8a50d8537cf9c84ed6  # v6.3.1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: actions/setup-go
         uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491  # v5.0.0
@@ -79,7 +99,7 @@ jobs:
             --tests=true
             --timeout=1m
             --config=.github/linters/.golangci.yml
-            --issues-exit-code=0
+            --issues-exit-code=1
 
           # Optional: show only new issues if it's a pull request. The default value is `false`.
           # only-new-issues: true
@@ -115,15 +135,7 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@c953fca3e24a915e111cc6f55f03f756dcb3964c  # v3.0.0
         with:
           path: coverage.lcov
-          min_coverage: 0.0
-
-      # Upload generated artifacts for historical reference
-      - name: actions/upload-artifact
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3  # v4.3.1
-        with:
-          name: test-reports
-          path: ./coverage.*
-          retention-days: 180
+          min_coverage: 40
 
       - name: pre-build
         id: prebuild
@@ -151,3 +163,16 @@ jobs:
             -X 'internal/version.Commit=${{ github.sha }}' \
             -X 'internal/version.GoVersion=${{ steps.prebuild.outputs.goversion }}'" \
             -o dist/${APP} cmd/${APP}/main.go
+
+      # Upload generated artifacts for historical reference
+      - name: actions/upload-artifact
+        id: artifact-upload-step
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3  # v4.3.1
+        with:
+          name: test-reports
+          path: ./coverage.*
+          retention-days: 180
+
+      - name: Show Artifact ID
+        run: |
+          echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'
