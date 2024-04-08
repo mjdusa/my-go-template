@@ -19,7 +19,7 @@ type RunnerSuite struct {
 }
 
 func TestRunnerSuite(t *testing.T) {
-	runnerSuite := RunnerSuite{} //nolint:exhaustivestruct  // This is then normal way to instantiate a suite
+	runnerSuite := RunnerSuite{} //nolint:exhaustruct  // This is then normal way to instantiate a suite
 	suite.Run(t, &runnerSuite)
 }
 

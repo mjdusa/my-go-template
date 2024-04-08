@@ -16,7 +16,7 @@ type VersionSuite struct {
 }
 
 func TestVersionSuite(t *testing.T) {
-	versionSuite := VersionSuite{} //nolint:exhaustivestruct  // This is then normal way to instantiate a suite
+	versionSuite := VersionSuite{} //nolint:exhaustruct  // This is then normal way to instantiate a suite
 	suite.Run(t, &versionSuite)
 }
 
