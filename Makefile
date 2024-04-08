@@ -125,10 +125,18 @@ gitleaks: init $(BUILD_DIR)
 	gitleaks detect --config=.github/linters/.gitleaks.toml --source=. --redact --log-level=debug --report-format=json \
 	  --report-path=$(BUILD_DIR)/gitleaks-$(BUILD_TS).out --verbose
 
-.PHONY: unittest
-unittest: init $(BUILD_DIR)
-	$(GOENV)
-	$(GOCMD) test -race -coverprofile="$(COVERAGE_REPORT).gcov" -covermode=atomic ./...
+.PHONY: fuzz
+fuzz: init
+	$(GOTEST) -fuzz=Fuzz -fuzztime 30s ./...
+
+.PHONY: race
+race: init
+	$(GOTEST) -v -race -coverprofile="$(COVERAGE_REPORT).gcov" -covermode=atomic ./...
+	cat "$(COVERAGE_REPORT).gcov"
+
+.PHONY: unit
+unit: init $(BUILD_DIR)
+	$(GOTEST) -v -coverprofile="$(COVERAGE_REPORT).gcov" -covermode=count ./...
 	cat "$(COVERAGE_REPORT).gcov"
 	gcov2lcov -infile "$(COVERAGE_REPORT).gcov" -outfile "$(COVERAGE_REPORT).lcov"
 	cat "$(COVERAGE_REPORT).lcov"
@@ -136,7 +144,7 @@ unittest: init $(BUILD_DIR)
 #	$(GOCMD) tool cover -html="$(COVERAGE_REPORT).gcov"
 
 .PHONY: tests
-tests: unittest
+tests: unit race # fuzz
 
 .PHONY: gobuild
 gobuild: $(DIST_DIR) prebuild lint gitleaks tests
