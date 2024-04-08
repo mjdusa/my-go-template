@@ -13,6 +13,12 @@ on:
   schedule:
     - cron: '0 12 * * *'  # Sets Semgrep to scan every day at 12:00 UTC / 6:00 CST
 
+# Don't grant any access by default
+permissions: {}
+
+env:
+  target_ref: ${{ github.head_ref || github.ref_name }}
+
 jobs:
   semgrep:
     name: semgrep
@@ -21,6 +27,14 @@ jobs:
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
+
+    ############################################
+    # Grant status permission for MULTI_STATUS #
+    ############################################
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
 
     container:
       # A Docker image with Semgrep installed. Do not change this.
