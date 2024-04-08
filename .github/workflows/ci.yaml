@@ -2,17 +2,16 @@
 name: CI
 
 on:
-  workflow_dispatch:
-
+  # Scan on-demand through GitHub Actions interface:
+  workflow_dispatch: {}
+  # Scan workflow call:
   workflow_call:
-
+  # Scan mainline branches and report all findings:
   push:
-    branches:
-      - main
-
+    branches: ["master", "main"]
+  # Scan changed files in PRs (diff-aware scanning):
   pull_request:
-    branches:
-      - main
+    branches: ["master", "main"]
 
 # Don't grant any access by default
 permissions: {}

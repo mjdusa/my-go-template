@@ -16,7 +16,8 @@ type VersionSuite struct {
 }
 
 func TestVersionSuite(t *testing.T) {
-	suite.Run(t, &VersionSuite{})
+	versionSuite := VersionSuite{} //nolint:exhaustivestruct  // This is then normal way to instantiate a suite
+	suite.Run(t, &versionSuite)
 }
 
 type testGetVersion struct {
@@ -26,7 +27,6 @@ type testGetVersion struct {
 	BuildTime   string
 	Commit      string
 	GoVersion   string
-	Expected    string
 }
 
 func createGetVersionTestData() []testGetVersion {
@@ -52,7 +52,7 @@ func createGetVersionTestData() []testGetVersion {
 	return tests
 }
 
-func (s *VersionSuite) Test_GetVersion() {
+func (s *VersionSuite) TestGetVersion() {
 	for _, tst := range createGetVersionTestData() {
 		expected := fmt.Sprintf(
 			"%s version: [%s]\n- Branch:     [%s]\n- Build Time: [%s]\n- Commit:     [%s]\n- Go Version: [%s]\n",
