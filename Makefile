@@ -174,7 +174,10 @@ usage:
 	@echo "  install - install latest build app dependancies (ie: golangci-lint, gcov2lcov)"
 	@echo "  lint - run all linter checks"
 	@echo "  release - build release version of binary"
-	@echo "  tests - run all tests"
+	@echo "  tests - run all tests  ie: fuzz, race, and unit"
+	@echo "  fuzz - run all fuzz tests"
+	@echo "  race - run all race tests"
+	@echo "  unit - run all unit tests"
 	@echo "  usage - show this information"
 
 .PHONY: help
