@@ -21,7 +21,7 @@ Please see our [Contributing](./CONTRIBUTING.md) for how to contribute to the pr
 
 1. Clone repository
 ```bash
-git clone <LINK>
+git clone <URL>
 ```
 
 2. Setup Pre-commit Hooks
@@ -43,7 +43,7 @@ pre-commit 3.3.2
 pre-commit autoupdate
 ```
 
-* Install pre-commit into the local git.
+* Install pre-commit into the local Git config.
 ```bash
 pre-commit install --install-hooks
 ```
