@@ -35,6 +35,6 @@ repos:
       - id: gitleaks
         name: gitleaks
         args: [
-            detect --config=.gitleaks.toml --source=. --redact --log-level=debug |
-            --report-format=json --report-path=dist/gitleaks.out --verbose,
-          ]
+          detect --config=.gitleaks.toml --source=. --redact --log-level=debug |
+          --report-format=json --report-path=dist/gitleaks.out --verbose,
+        ]
