@@ -19,14 +19,14 @@ permissions: {}
 env:
   target_ref: ${{ github.head_ref || github.ref_name }}
   GO111MODULE: on
-  GOPRIVATE: ''
+  GOPRIVATE: ""
 
 jobs:
   ci:
     name: ci
     strategy:
       matrix:
-        go-version: ['stable']  # only use ONE version of go here or the upload-artifact will fail
+        go-version: ["stable"] # only use ONE version of go here or the upload-artifact will fail
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
@@ -46,7 +46,7 @@ jobs:
           repository: ${{ github.repository }}
           ref: ${{ env.target_ref }}
           token: ${{ github.token }}
-          persist-credentials: false  # otherwise, the token used is the GITHUB_TOKEN, instead of your
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your
           #                             personal access token.
           fetch-depth: 0
 
