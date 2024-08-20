@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: actions/checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.repository }}
           ref: ${{ env.target_ref }}
