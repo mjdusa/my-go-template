@@ -25,8 +25,10 @@ func TestRunnerSuite(t *testing.T) {
 
 type testGetParameters struct {
 	Description     string
+	VersionFlag     bool
 	DebugFlag       bool
 	VerboseFlag     bool
+	ExpectedVersion bool
 	ExpectedDebug   bool
 	ExpectedVerbose bool
 }
@@ -35,29 +37,37 @@ func createGetParametersTestData() []testGetParameters {
 	tests := []testGetParameters{
 		{
 			Description:     "All false",
+			VersionFlag:     false,
 			DebugFlag:       false,
 			VerboseFlag:     false,
+			ExpectedVersion: false,
 			ExpectedDebug:   false,
 			ExpectedVerbose: false,
 		},
 		{
 			Description:     "All true",
+			VersionFlag:     true,
 			DebugFlag:       true,
 			VerboseFlag:     true,
+			ExpectedVersion: true,
 			ExpectedDebug:   true,
 			ExpectedVerbose: true,
 		},
 		{
 			Description:     "Flip Flop",
+			VersionFlag:     false,
 			DebugFlag:       true,
 			VerboseFlag:     false,
+			ExpectedVersion: false,
 			ExpectedDebug:   true,
 			ExpectedVerbose: false,
 		},
 		{
 			Description:     "Flop Flip",
+			VersionFlag:     true,
 			DebugFlag:       false,
 			VerboseFlag:     true,
+			ExpectedVersion: true,
 			ExpectedDebug:   false,
 			ExpectedVerbose: true,
 		},
@@ -69,6 +79,9 @@ func createGetParametersTestData() []testGetParameters {
 func (s *RunnerSuite) Test_GetParameters() {
 	for _, test := range createGetParametersTestData() {
 		os.Args = []string{putRunner}
+		if test.VersionFlag {
+			os.Args = append(os.Args, "-version")
+		}
 		if test.DebugFlag {
 			os.Args = append(os.Args, "-debug")
 		}
@@ -76,8 +89,9 @@ func (s *RunnerSuite) Test_GetParameters() {
 			os.Args = append(os.Args, "-verbose")
 		}
 
-		actualDebug, actualVerbose := put.GetParameters()
+		actualVersion, actualDebug, actualVerbose := put.GetParameters()
 
+		assert.Equal(s.T(), test.ExpectedVersion, actualVersion, test.Description)
 		assert.Equal(s.T(), test.ExpectedDebug, actualDebug, test.Description)
 		assert.Equal(s.T(), test.ExpectedVerbose, actualVerbose, test.Description)
 	}
