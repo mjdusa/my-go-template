@@ -2,7 +2,7 @@
 SHELL=/bin/bash
 
 BUILD_TS:=$(shell date -u +"%Y-%m-%d_%H%M%S%Z")
-BUILD_DIR:=./build
+BUILD_DIR:=./bld
 DIST_DIR:=./dist
 
 APP_NAME:=my-go-template
@@ -23,7 +23,7 @@ GIT_REPO:=$(subst $(PREFIX),$(EMPTY),$(subst $(SUFFIX),$(EMPTY),$(GIT_REPO_URL))
 
 # Go parameters
 GOCMD=go
-GOBINPATH=$(shell $(GOCMD) env GOPATH)/bin
+GOBIN=$(shell $(GOCMD) env GOPATH)/bin
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOENV=$(GOCMD) env
@@ -37,15 +37,14 @@ GOTOOL=$(GOCMD) tool
 
 GO_VERSION:=$(shell go version | sed -r 's/go version go(.*)\ .*/\1/')
 
-GOBIN:=${GOPATH}/bin
-
 GOFLAGS = -a
 LDFLAGS = -s -w -X '$(GIT_REPO)/internal/version.AppVersion=$(APP_VERSION)' -X '$(GIT_REPO)/internal/version.Branch=$(GIT_BRANCH)' -X '$(GIT_REPO)/internal/version.BuildTime=$(BUILD_TS)' -X '$(GIT_REPO)/internal/version.Commit=$(GIT_COMMIT)' -X '$(GIT_REPO)/internal/version.GoVersion=$(GO_VERSION)'
 #LDFLAGS = -s -w
 
-# Tools
-LINTER_REPORT = $(BUILD_DIR)/golangci-lint-$(BUILD_TS).out
+# Reports
 COVERAGE_REPORT = $(BUILD_DIR)/unit-test-coverage-$(BUILD_TS)
+GITLEAKS_REPORT = $(BUILD_DIR)/gitleaks-$(BUILD_TS).out
+LINTER_REPORT = $(BUILD_DIR)/golangci-lint-$(BUILD_TS).out
 
 # Rules
 .PHONY: default
@@ -87,6 +86,18 @@ $(DIST_DIR):
 	@echo "$(DIST_DIR)"
 	@mkdir -p $@
 
+.PHONY: $(COVERAGE_REPORT)
+$(COVERAGE_REPORT): $(BUILD_DIR)
+	@echo "$(COVERAGE_REPORT)"
+
+.PHONY: $(GITLEAKS_REPORT)
+$(GITLEAKS_REPORT): $(BUILD_DIR)
+	@echo "$(GITLEAKS_REPORT)"
+
+.PHONY: $(LINTER_REPORT)
+$(LINTER_REPORT): $(BUILD_DIR)
+	@echo "$(LINTER_REPORT)"
+
 go.mod:
 	@echo "go mod tidy"
 	@$(GOMOD) tidy
@@ -109,33 +120,33 @@ prebuild: init clean goclean $(BUILD_DIR) $(DIST_DIR) go.mod
 	$(GOENV)
 
 .PHONY: golangcilint
-golangcilint: init $(BUILD_DIR)
+golangcilint: init $(LINTER_REPORT)
 	echo "Running golangci-lint"
-	${GOPATH}/bin/golangci-lint --version
-	${GOPATH}/bin/golangci-lint run --verbose --tests=true --timeout=1m --config .github/linters/.golangci.yml \
-	  --issues-exit-code=0 --out-format=checkstyle > "$(LINTER_REPORT)"
+	${GOBIN}/golangci-lint --version
+	${GOBIN}/golangci-lint run --verbose --tests=true --timeout=1m \
+	  --config=./.github/linters/.golangci.yml --issues-exit-code=0 > "$(LINTER_REPORT)"
 	cat $(LINTER_REPORT)
 
 .PHONY: lint
 lint: golangcilint
 
 .PHONY: gitleaks
-gitleaks: init $(BUILD_DIR)
+gitleaks: init $(GITLEAKS_REPORT)
 	@echo "Running gitleaks"
-	gitleaks detect --config=.github/linters/.gitleaks.toml --source=. --redact --log-level=debug --report-format=json \
-	  --report-path=$(BUILD_DIR)/gitleaks-$(BUILD_TS).out --verbose
+	gitleaks detect --config=.github/linters/.gitleaks.toml --source=. --redact --log-level=debug \
+	  --report-format=json --report-path=$(GITLEAKS_REPORT) --verbose
 
 .PHONY: fuzz
 fuzz: init
 	$(GOTEST) -fuzz=Fuzz -fuzztime 30s ./...
 
 .PHONY: race
-race: init
+race: init $(COVERAGE_REPORT)
 	$(GOTEST) -v -race -coverprofile="$(COVERAGE_REPORT).gcov" -covermode=atomic ./...
 	cat "$(COVERAGE_REPORT).gcov"
 
 .PHONY: unit
-unit: init $(BUILD_DIR)
+unit: init $(COVERAGE_REPORT)
 	$(GOTEST) -v -coverprofile="$(COVERAGE_REPORT).gcov" -covermode=count ./...
 	cat "$(COVERAGE_REPORT).gcov"
 	gcov2lcov -infile "$(COVERAGE_REPORT).gcov" -outfile "$(COVERAGE_REPORT).lcov"
@@ -150,12 +161,16 @@ tests: unit race # fuzz
 gobuild: $(DIST_DIR) prebuild lint gitleaks tests
 	$(GOBUILD) $(GOFLAGS) -ldflags="$(LDFLAGS)" -o $(DIST_DIR)/$(APP_NAME) cmd/$(APP_NAME)/main.go
 
+.PHONY: appversion
+appversion: gobuild
+	$(DIST_DIR)/$(APP_NAME)  -version
+
 .PHONY: debug
 debug: GOFLAGS += -x -v
-debug: clean goclean gobuild
+debug: clean goclean lint gitleaks gobuild appversion
 
 .PHONY: release
-release: clean godeepclean gobuild
+release: clean godeepclean lint gitleaks tests gobuild appversion
 
 .PHONY: pre-commit
 pre-commit: init

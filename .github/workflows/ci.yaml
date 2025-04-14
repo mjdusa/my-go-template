@@ -75,25 +75,13 @@ jobs:
           go mod tidy
 
       - name: golangci/golangci-lint-action
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           # Require: The version of golangci-lint to use.
           # When `install-mode` is `binary` (default) the value can be v1.2 or v1.2.3 or `latest` to use the
           # latest version. When `install-mode` is `goinstall` the value can be v1.2.3, `latest`, or the hash
           # of a commit.
           version: latest
-
-          # Optional: The mode to install golangci-lint. It can be 'binary' or 'goinstall'.
-          # install-mode: "goinstall"
-
-          # Optional: When using only-new-issues option, the GitHub API is used, so a token is required.
-          # github-token:
-
-          # Optional: show only new issues if it's a pull request. The default value is `false`.
-          # only-new-issues:
-
-          # Optional: working directory, useful for monorepos
-          # working-directory: somedir
 
           # Optional: golangci-lint command line arguments.
           #
@@ -105,21 +93,6 @@ jobs:
             --timeout=1m
             --config=.github/linters/.golangci.yml
             --issues-exit-code=1
-
-          # Optional: Force the usage of the embedded problem matchers.
-          # problem-matchers: true
-
-          # Optional: If set to true, then all caching functionality will be completely
-          # disabled, takes precedence over all other caching options.
-          # skip-cache: true
-
-          # Optional: If set to true, caches will not be saved, but they may still be
-          # restored, required skip-cache: false.
-          # skip-save-cache: true
-
-          # Optional: Periodically invalidate the cache every cache-invalidation-interval
-          # days to ensure that outdated data is removed and fresh data is loaded.
-          # cache-invalidation-interval: 7
 
       - name: go test
         run: |
