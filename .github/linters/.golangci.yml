@@ -100,7 +100,7 @@ linters:
     # - paralleltest  # [too many false positives] detects missing usage of t.Parallel()
     #   method in your Go test
     # - perfsprint  # checks that fmt.Sprintf can be replaced with a faster alternative
-    # - prealloc  # [premature optimization, but can be used in some cases] finds 
+    # - prealloc  # [premature optimization, but can be used in some cases] finds
     #   slice declarations that could potentially be preallocated
     - predeclared  # finds code that shadows one of Go's predeclared identifiers
     - promlinter  # checks Prometheus metrics naming via promlint
@@ -128,7 +128,7 @@ linters:
     - usestdlibvars  # detects the possibility to use variables/constants from the
     #   Go standard library
     - usetesting  # reports uses of functions with replacement inside the testing package
-    - varnamelen  # [great idea, but too many false positives] checks that the 
+    - varnamelen  # [great idea, but too many false positives] checks that the
     #   length of a variable's name matches its scope
     - wastedassign  # finds wasted assignment statements
     - whitespace  # detects leading and trailing whitespace
